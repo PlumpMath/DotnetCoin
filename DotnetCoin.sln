@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.0.0
+MinimumVisualStudioVersion = 10.0.0.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotcoinConsole", "DotcoinConsole/DotcoinConsole.csproj", "{C29DD34C-D08D-4A3C-90E0-7E3220006943}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dotcoin", "Dotcoin\Dotcoin.csproj", "{AFB2860F-9F02-4987-ADFC-E71FA83F947B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotcoinApi", "DotcoinApi\DotcoinApi.csproj", "{0D90B0E9-0563-4245-850C-0C5952E11ED8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotcoinTests", "DotcoinTests\DotcoinTests.csproj", "{A2861862-BBF0-4C67-ADF9-3F72B7098544}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C29DD34C-D08D-4A3C-90E0-7E3220006943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C29DD34C-D08D-4A3C-90E0-7E3220006943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C29DD34C-D08D-4A3C-90E0-7E3220006943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C29DD34C-D08D-4A3C-90E0-7E3220006943}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFB2860F-9F02-4987-ADFC-E71FA83F947B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFB2860F-9F02-4987-ADFC-E71FA83F947B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFB2860F-9F02-4987-ADFC-E71FA83F947B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFB2860F-9F02-4987-ADFC-E71FA83F947B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D90B0E9-0563-4245-850C-0C5952E11ED8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D90B0E9-0563-4245-850C-0C5952E11ED8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D90B0E9-0563-4245-850C-0C5952E11ED8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D90B0E9-0563-4245-850C-0C5952E11ED8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2861862-BBF0-4C67-ADF9-3F72B7098544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2861862-BBF0-4C67-ADF9-3F72B7098544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2861862-BBF0-4C67-ADF9-3F72B7098544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2861862-BBF0-4C67-ADF9-3F72B7098544}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
