@@ -25,6 +25,17 @@ There are several main components to this project.
 
 4.  A Console application which allows the use of the webapi.
 
+## Running Locally
+
+Inorder to run the site locally clone the repo and navigate to DotcoinApi then run the following commands:
+
+```
+dotnet build
+dotnet run
+```
+
+Then navigate to `http://localhost:5000/BlockChain.html`
+
 ## Roadmap
 
 1.  Get working on a single node - In Progress

@@ -22,6 +22,7 @@ namespace DotcoinApi
                 .UseEnvironment("Developement")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
+                .UseUrls("http://localhost:5000")
                 .Build();
     }
 }
