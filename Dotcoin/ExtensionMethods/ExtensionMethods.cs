@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace Dotcoin
@@ -24,6 +25,16 @@ namespace Dotcoin
                 stringBuilder.Append((int) b);
             }
             return long.Parse(stringBuilder.ToString());
+        }
+
+        public static bool LessThan(this DateTime d1, DateTime d2)
+        {
+            int result = d1.CompareTo(d2);
+
+            if (result < 0)
+                return true;
+            
+            return false;
         }
     }
 }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using Dotcoin.NetworkSyncing;
 using Newtonsoft.Json;
 using static Newtonsoft.Json.JsonConvert;
 
@@ -16,9 +18,42 @@ namespace Dotcoin
         private readonly ITransactionVerifier _transactionVerifier;
         private readonly IProofOfWork _proofOfWork = new SimpleProofOfWork();
         private readonly bool _overideBlockchainSave; //used if when we modify the chain in a test we don't save that change
+        private readonly DotcoinNetwork _network;
         
-        public Node(ITransactionVerifier transactionVerifier, string overrideFilelocation = "", bool overideBlockchainSave = false)
+        private IPAddress _masterAddress = null;
+        
+        public Node(ITransactionVerifier transactionVerifier, string overrideFilelocation = "", bool overideBlockchainSave = false, IPAddress master = null)
         {
+            //if you dont pass in a master address it assumes
+            //there is no master and takes over that roll
+            IPAddress myIp = null;
+            
+            var hostname = Dns.GetHostName();
+                
+            Console.WriteLine(string.Format("Nodes hostname is: {0}", hostname));
+
+            var ips = Dns.GetHostAddresses(hostname);
+
+            foreach (var ip in ips)
+            {
+                //TODO make this a correct public ip
+                myIp = ip;
+                _masterAddress = ip;
+                Console.WriteLine(ip.ToString());
+            }
+            
+            if (myIp == null)
+            {
+                throw new Exception("Error getting ip");
+            }
+            
+            if (master == null)
+            {
+                _masterAddress = myIp;
+            }
+            
+            _network = new DotcoinNetwork(myIp, _masterAddress);
+            
             _transactionVerifier = transactionVerifier;
             _overideBlockchainSave = overideBlockchainSave;
             
