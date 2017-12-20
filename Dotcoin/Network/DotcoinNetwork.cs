@@ -23,7 +23,11 @@ namespace Dotcoin.Network
         public DotcoinNetwork(IPAddress nodeIp, IPAddress masterIp)
         {
             _addresses.Add(nodeIp, DateTime.Now);
-            _addresses.Add(masterIp, DateTime.Now);            
+
+            if (!nodeIp.Equals(masterIp)) //helps prevent glitch when working locally
+            {
+                _addresses.Add(masterIp, DateTime.Now);
+            } 
         }
 
         public async Task<bool> LoadNetwork()

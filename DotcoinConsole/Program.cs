@@ -6,14 +6,18 @@ namespace SimpleBlockChain
 {
     class Program
     {
+        private static ConsoleSettings _settings = new ConsoleSettings();
+        private const string DEFAULT_CONSOLE_MODE = "Node";
+        
         static void Main(string[] args)
         {
             if (args.Length == 0)
             {
                 args = new string[1];
-                args[0] = "Node";
-                
+                args[0] = DEFAULT_CONSOLE_MODE;
             }
+
+            _settings.LoadSettings().Wait();
             
             switch (args[0])
             {
@@ -31,7 +35,6 @@ namespace SimpleBlockChain
                      break;
             }
         }
-
         static void PrintHelpMessage()
         {
             string helpMessage = "args0: Mode (Client, Node, Help)\n" +
@@ -42,13 +45,16 @@ namespace SimpleBlockChain
         static void NodeMode()
         {
             Console.WriteLine("Welcome to node mode");
+
+            var node = new Node(new PositiveTransactionValidator());
+
         }
         static void HttpClientMode()
         {
             Console.WriteLine("Welcome to client mode");
 
             var client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5000/api/Coin/");
+            client.BaseAddress = new Uri(_settings.GetConnectionUrl());
             
             while (true)
             {
