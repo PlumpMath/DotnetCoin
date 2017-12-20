@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using static Newtonsoft.Json.JsonConvert;
 
-namespace Dotcoin.NetworkSyncing
+namespace Dotcoin.Network
 {
     public class DotcoinNetwork
     {
@@ -23,8 +23,7 @@ namespace Dotcoin.NetworkSyncing
         public DotcoinNetwork(IPAddress nodeIp, IPAddress masterIp)
         {
             _addresses.Add(nodeIp, DateTime.Now);
-            _addresses.Add(masterIp, DateTime.Now);
-            
+            _addresses.Add(masterIp, DateTime.Now);            
         }
 
         public async Task<bool> LoadNetwork()
@@ -49,9 +48,8 @@ namespace Dotcoin.NetworkSyncing
             return true;
         }
 
-        public async Task<bool> PostToNetwork(Object data, string route)
+        public async Task<bool> SendToNetwork(Object data, string route)
         {
-            
             //only get addreses that weve heard from and think
             //are still active
             var ips = _addresses.Where(e => DateTime.Now.Subtract(e.Value).Seconds < TIMEOUT_SECONDS);

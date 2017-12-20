@@ -8,7 +8,44 @@ namespace SimpleBlockChain
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to this simple blockchain");
+            if (args.Length == 0)
+            {
+                args = new string[1];
+                args[0] = "Node";
+                
+            }
+            
+            switch (args[0])
+            {
+                 case "Node":
+                     NodeMode();
+                     break;
+                 case "Client":
+                     HttpClientMode();
+                     break;
+                 case "Help":
+                     PrintHelpMessage();
+                     break;
+                 default:
+                     HttpClientMode();
+                     break;
+            }
+        }
+
+        static void PrintHelpMessage()
+        {
+            string helpMessage = "args0: Mode (Client, Node, Help)\n" +
+                                 "args1: Settings File\n";
+            
+            Console.WriteLine(helpMessage);
+        }
+        static void NodeMode()
+        {
+            Console.WriteLine("Welcome to node mode");
+        }
+        static void HttpClientMode()
+        {
+            Console.WriteLine("Welcome to client mode");
 
             var client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5000/api/Coin/");
@@ -72,6 +109,6 @@ namespace SimpleBlockChain
                     Console.WriteLine(result.Result.Content.ReadAsStringAsync().Result);
                 }
             }
-        } 
+        }
     }
 }

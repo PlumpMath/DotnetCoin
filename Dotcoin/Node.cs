@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using Dotcoin.NetworkSyncing;
+using Dotcoin.Network;
 using Newtonsoft.Json;
 using static Newtonsoft.Json.JsonConvert;
 
