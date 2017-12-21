@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Dotcoin.Network.Server;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using static Newtonsoft.Json.JsonConvert;
@@ -17,11 +18,12 @@ namespace Dotcoin.Network
         private readonly ConcurrentDictionary<IPAddress, DateTime> _addresses = new ConcurrentDictionary<IPAddress, DateTime>();
         private readonly IPAddress _nodeIp;
         private volatile IPAddress _masterIp;
+        private readonly IDotcoinServer _dotcoinServer;
         
         private const int TIMEOUT_SECONDS = 1000;
         private const int PORT = 5000;
         
-        public DotcoinNetwork(IPAddress nodeIp, IPAddress masterIp)
+        public DotcoinNetwork(IPAddress nodeIp, IPAddress masterIp, IDotcoinServer dotcoinDotcoinServer)
         {
             _nodeIp = nodeIp;
             _masterIp = masterIp;
@@ -34,7 +36,10 @@ namespace Dotcoin.Network
             } 
             
             LoadKnownIps();
+
+            _dotcoinServer = dotcoinDotcoinServer;
             
+            _dotcoinServer.StartServer(_nodeIp, PORT);
         }
 
         public async Task<bool> LoadNetwork()
@@ -69,15 +74,7 @@ namespace Dotcoin.Network
             
             Parallel.ForEach(ips, ip =>
             {
-                var client = new HttpClient();
-                client.BaseAddress = new Uri(string.Format("http://{0}.api", _masterIp));
-
-                var result = client.PostAsJsonAsync(route, data);
-
-                if (result.Result.StatusCode != HttpStatusCode.OK)
-                {
-                    @return = false;
-                }
+                
             });
 
             return @return;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using Dotcoin.Network;
+using Dotcoin.Network.Server;
 using Newtonsoft.Json;
 using static Newtonsoft.Json.JsonConvert;
 
@@ -22,7 +23,7 @@ namespace Dotcoin
         
         private IPAddress _masterAddress = null;
         
-        public Node(ITransactionVerifier transactionVerifier, string overrideFilelocation = "", bool overideBlockchainSave = false, IPAddress master = null)
+        public Node(ITransactionVerifier transactionVerifier, string overrideFilelocation = "", bool overideBlockchainSave = false, IPAddress master = null, IDotcoinServer dotcoinServer = null)
         {
             //if you dont pass in a master address it assumes
             //there is no master and takes over that roll
@@ -51,10 +52,16 @@ namespace Dotcoin
             {
                 _masterAddress = myIp;
             }
+
+            if (dotcoinServer == null) //default server for the chain
+            {
+                dotcoinServer = new DotcoinTCPServer();
+            }
             
-            _network = new DotcoinNetwork(myIp, _masterAddress);
+            _network = new DotcoinNetwork(myIp, _masterAddress, dotcoinServer);
             
             _transactionVerifier = transactionVerifier;
+            
             _overideBlockchainSave = overideBlockchainSave;
             
             if (overrideFilelocation == "")

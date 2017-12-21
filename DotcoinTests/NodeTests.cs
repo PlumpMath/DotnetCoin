@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Dotcoin;
+using Dotcoin.Network.Server;
 using Xunit;
 
 using static Newtonsoft.Json.JsonConvert;
@@ -15,7 +16,7 @@ namespace DotcoinTests
         public void TestNode_Creation()
         {
             var transactionValidator = new AlwaysYesTransactionValidator();
-            var node = new Node(transactionValidator);
+            var node = new Node(transactionValidator, dotcoinServer:GetTestServer());
             
             Assert.True(node.ToString() != "");
         }
@@ -23,7 +24,7 @@ namespace DotcoinTests
         [Fact]
         public void TestNode_LoadAndSize()
         {
-            var node = new Node(new AlwaysYesTransactionValidator(), "load_test.chain");
+            var node = new Node(new AlwaysYesTransactionValidator(), "load_test.chain",dotcoinServer:GetTestServer());
             
             Assert.True(node.BlockChainSize() == 1);
         }
@@ -193,12 +194,17 @@ namespace DotcoinTests
         
         private static Node CreateYesTestNode()
         {
-            return new Node(new AlwaysYesTransactionValidator(), "dotcoin.chain", true);
+            return new Node(new AlwaysYesTransactionValidator(), "dotcoin.chain", true, dotcoinServer:GetTestServer());
         }
         
         private static Node CreateNoTestNode()
         {
-            return new Node(new AlwaysNoTransactionValidator(), "dotcoin.chain", true);
+            return new Node(new AlwaysNoTransactionValidator(), "dotcoin.chain", true, dotcoinServer:GetTestServer());
+        }
+
+        private static IDotcoinServer GetTestServer()
+        {
+            return new DotcoinTestServer();
         }
     }
 }
