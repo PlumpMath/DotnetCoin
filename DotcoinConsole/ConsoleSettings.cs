@@ -28,7 +28,7 @@ namespace SimpleBlockChain
             return string.Format("{0}:{1}{2}", ClientBaseUrl, ClientPort, DefaultRoot);
         }
         
-        public async Task SaveSettings(string fileLocation)
+        public void SaveSettings(string fileLocation)
         {
             var serialized = SerializeObject(this, _serializerSettings);
             
@@ -47,7 +47,7 @@ namespace SimpleBlockChain
         {
             if (!File.Exists(fileLocation))
             {
-                CreateDefaultFile().Wait();
+                CreateDefaultFile();
                 await LoadSettings(DEFAULT_FILE_LOCATION);
             }
             
@@ -61,7 +61,7 @@ namespace SimpleBlockChain
             return this;
         }
 
-        private async Task CreateDefaultFile()
+        private void CreateDefaultFile()
         {
             var serializeObject = SerializeObject(new ConsoleSettings
             {

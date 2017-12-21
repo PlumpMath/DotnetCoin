@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,10 +11,10 @@ using static Newtonsoft.Json.JsonConvert;
 
 namespace Dotcoin.Network
 {
-    public class DotcoinNetwork
+    public class DotcoinNetwork : IDisposable
     {
         //keep track of ip addresses and last sucessful transmission
-        private readonly Dictionary<IPAddress, DateTime> _addresses = new Dictionary<IPAddress, DateTime>();
+        private readonly ConcurrentDictionary<IPAddress, DateTime> _addresses = new ConcurrentDictionary<IPAddress, DateTime>();
         private readonly IPAddress _nodeIp;
         private volatile IPAddress _masterIp;
         
@@ -22,12 +23,18 @@ namespace Dotcoin.Network
         
         public DotcoinNetwork(IPAddress nodeIp, IPAddress masterIp)
         {
-            _addresses.Add(nodeIp, DateTime.Now);
+            _nodeIp = nodeIp;
+            _masterIp = masterIp;
+            
+            _addresses.TryAdd(nodeIp, DateTime.Now);
 
             if (!nodeIp.Equals(masterIp)) //helps prevent glitch when working locally
             {
-                _addresses.Add(masterIp, DateTime.Now);
+                _addresses.TryAdd(masterIp, DateTime.Now);
             } 
+            
+            LoadKnownIps();
+            
         }
 
         public async Task<bool> LoadNetwork()
@@ -46,7 +53,7 @@ namespace Dotcoin.Network
             
             foreach (var ips in listAddreses)
             {
-                _addresses.Add(ips, DateTime.Now);
+                _addresses.TryAdd(ips, DateTime.Now);
             }
 
             return true;
@@ -75,5 +82,41 @@ namespace Dotcoin.Network
 
             return @return;
         }
+
+        public bool PingIp(IPAddress address)
+        {
+            return true;
+        }
+ 
+        public void Dispose()
+        {
+            var knownIps = _addresses.Keys.ToList();
+            
+            DotcoinIpManager.SaveIpAddresses(knownIps);
+        }
+        
+        private void LoadKnownIps()
+        {
+            var knownIps = DotcoinIpManager.LoadIpAddresses();
+
+            if (knownIps.Count == 0)
+            {
+                return;
+            }
+
+            Parallel.ForEach(knownIps, e =>
+            {
+                if (PingIp(e))
+                {
+                    _addresses[e] = DateTime.Now;
+                }
+                else
+                {
+                    _addresses[e] = DateTime.MinValue;
+                }
+            });
+        }
+
+     
     }
 }
