@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Dotcoin.Network.Server;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +24,7 @@ namespace Dotcoin.Network
         private const int TIMEOUT_SECONDS = 1000;
         private const int PORT = 5000;
         
-        public DotcoinNetwork(IPAddress nodeIp, IPAddress masterIp, IDotcoinServer dotcoinDotcoinServer)
+        public DotcoinNetwork(IPAddress nodeIp, IPAddress masterIp, IDotcoinServer dotcoinDotcoinServer, string knownIpFile = "")
         {
             _nodeIp = nodeIp;
             _masterIp = masterIp;
@@ -35,7 +36,7 @@ namespace Dotcoin.Network
                 _addresses.TryAdd(masterIp, DateTime.Now);
             } 
             
-            LoadKnownIps();
+            LoadKnownIps(knownIpFile);
 
             _dotcoinServer = dotcoinDotcoinServer;
             
@@ -84,17 +85,23 @@ namespace Dotcoin.Network
         {
             return true;
         }
- 
+
         public void Dispose()
         {
-            var knownIps = _addresses.Keys.ToList();
-            
+            var knownIps = _addresses.Keys.Select(e => e.ToString()).ToList();
+
             DotcoinIpManager.SaveIpAddresses(knownIps);
         }
-        
-        private void LoadKnownIps()
+
+        public List<IPAddress> Network
         {
-            var knownIps = DotcoinIpManager.LoadIpAddresses();
+            get => _addresses.Keys.ToList();
+        }
+        
+        private void LoadKnownIps(string knownIpFile = "")
+        {
+            
+            var knownIps = DotcoinIpManager.LoadIpAddresses(knownIpFile);
 
             if (knownIps.Count == 0)
             {
