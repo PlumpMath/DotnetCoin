@@ -19,7 +19,6 @@ namespace DotcoinTests
             "192.168.1.4"
         };
         
-        
         public DotcoinNetworkTests()
         {
             createIpFile();

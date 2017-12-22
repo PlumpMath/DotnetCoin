@@ -9,7 +9,8 @@ namespace Dotcoin.Network
             GetMasterIp,
             GetNetworkIps,
             GetBlockChain,
-            InvalidRequestRecieveds
+            InvalidRequestRecieveds,
+            Ping
         }
         public IPAddress SenderIp;
         public RequestMethods RequestMethod;
