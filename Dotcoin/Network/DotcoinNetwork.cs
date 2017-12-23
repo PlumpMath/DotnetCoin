@@ -28,6 +28,7 @@ namespace Dotcoin.Network
         {
             _nodeIp = nodeIp;
             _masterIp = masterIp;
+            _dotcoinServer = dotcoinDotcoinServer;
             
             _addresses.TryAdd(nodeIp, DateTime.Now);
 
@@ -38,8 +39,6 @@ namespace Dotcoin.Network
             
             LoadKnownIps(knownIpFile);
 
-            _dotcoinServer = dotcoinDotcoinServer;
-            
             _dotcoinServer.StartServer(_nodeIp, PORT);
         }
 
@@ -65,25 +64,20 @@ namespace Dotcoin.Network
             return true;
         }
 
-        public async Task<bool> SendToNetwork(Object data, string route, Action onSucess = null)
+        public async Task<bool> SendToNetwork(DotcoinNetworkRequest networkRequest, Action onSucess = null)
         {
             //only get addreses that weve heard from and think
             //are still active
-            var ips = _addresses.Where(e => DateTime.Now.Subtract(e.Value).Seconds < TIMEOUT_SECONDS);
+            var ips = _addresses
+                .Where(e => DateTime.Now.Subtract(e.Value).Seconds < TIMEOUT_SECONDS)
+                .Select(e => e.Key)
+                .ToList();
 
             bool @return = true;
             
-            Parallel.ForEach(ips, ip =>
-            {
-                
-            });
-
+            _dotcoinServer.SendRequest(ips, networkRequest, onSucess);
+            
             return @return;
-        }
-
-        public bool PingIp(IPAddress address)
-        {
-            return true;
         }
 
         public void Dispose()
@@ -110,7 +104,7 @@ namespace Dotcoin.Network
 
             Parallel.ForEach(knownIps, e =>
             {
-                if (PingIp(e))
+                if (_dotcoinServer.Ping(e))
                 {
                     _addresses[e] = DateTime.Now;
                 }
