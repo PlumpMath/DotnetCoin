@@ -65,7 +65,7 @@ namespace Dotcoin.Network
             return true;
         }
 
-        public async Task<bool> SendToNetwork(Object data, string route)
+        public async Task<bool> SendToNetwork(Object data, string route, Action onSucess = null)
         {
             //only get addreses that weve heard from and think
             //are still active

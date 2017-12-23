@@ -44,57 +44,7 @@ namespace Dotcoin.Network.Server
             _ipAddress = ipAddress;
         }
 
-        //Hanles listening and enquening requests into a concurrent queue
-        private void Listen()
-        {
-            
-            Console.WriteLine("Starting listen thread");
-            
-            _listener.Start();
-
-            if (_listener == null || !_runListenThread)
-            {
-                return;
-            }
-
-            while (_runListenThread)
-            {
-                Console.WriteLine("Waiting for client...");
-                
-                var clientTask = _listener.AcceptTcpClientAsync();
-
-                if (clientTask.Result != null)
-                {
-                    Console.WriteLine("Client connected.  Waiting for data");
-
-                    var client = clientTask.Result;
-
-                    string message = "";
-
-                    while (message != null && !message.StartsWith("quit"))
-                    {
-                        byte[] buffer = new byte[1024];
-                        client.GetStream().Read(buffer, 0, buffer.Length);
-
-                        message = ASCII.GetString(buffer);
-                        
-                        var request = DeserializeObject<DotcoinNetworkRequest>(message);
-
-                        if (request != null)
-                        {
-                            _requests.Enqueue(request);
-                        }
-                        
-                    }
-                    Console.WriteLine("Closing connection.");
-                    client.GetStream().Dispose();
-                }
-            }
-            
-            _listener.Stop();
-        }
-
-        public void SendRequest(List<IPAddress> ipAddresses, DotcoinNetworkRequest networkRequest)
+        public void SendRequest(List<IPAddress> ipAddresses, DotcoinNetworkRequest networkRequest, Action onComplete = null)
         {
             var data = SerializeObject(networkRequest).ToByteArray();
             
@@ -147,6 +97,56 @@ namespace Dotcoin.Network.Server
             _listenThread.Join();
             
             Console.WriteLine("Server cleaned up");
+        }
+
+        //Handles listening and enquening requests into a concurrent queue
+        private void Listen()
+        {
+            
+            Console.WriteLine("Starting listen thread");
+            
+            _listener.Start();
+
+            if (_listener == null || !_runListenThread)
+            {
+                return;
+            }
+
+            while (_runListenThread)
+            {
+                Console.WriteLine("Waiting for client...");
+                
+                var clientTask = _listener.AcceptTcpClientAsync();
+
+                if (clientTask.Result != null)
+                {
+                    Console.WriteLine("Client connected.  Waiting for data");
+
+                    var client = clientTask.Result;
+
+                    string message = "";
+
+                    while (message != null && !message.StartsWith("quit"))
+                    {
+                        byte[] buffer = new byte[1024];
+                        client.GetStream().Read(buffer, 0, buffer.Length);
+
+                        message = ASCII.GetString(buffer);
+                        
+                        var request = DeserializeObject<DotcoinNetworkRequest>(message);
+
+                        if (request != null)
+                        {
+                            _requests.Enqueue(request);
+                        }
+                        
+                    }
+                    Console.WriteLine("Closing connection.");
+                    client.GetStream().Dispose();
+                }
+            }
+            
+            _listener.Stop();
         }
 
         private void SendRequest(IPAddress ip, byte[] data)
