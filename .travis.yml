@@ -1,7 +1,7 @@
 language: csharp
+solution: DotnetCoin.sln
 mono: none
 dotnet: 2.0.0
-solution: DotnetCoin.sln
 dist: trusty
 script:
 	./travis-build.sh
