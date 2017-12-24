@@ -144,7 +144,7 @@ namespace Dotcoin
                 {
                     streamWriter.WriteLine(block);
                 }
-            }    
+            }
         }
         public void Dispose()
         {
