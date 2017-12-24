@@ -7,6 +7,8 @@ using Dotcoin.Network;
 using Dotcoin.Network.Server;
 using Xunit;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+
 namespace DotcoinTests
 {
     public class DotcoinNetworkTests

@@ -3,6 +3,8 @@ using System.Security.Cryptography.X509Certificates;
 using Dotcoin;
 using Xunit;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+
 namespace DotcoinTests
 {
     public class BlockChainTests

@@ -4,6 +4,8 @@ using Dotcoin;
 using Xunit;
 using static Newtonsoft.Json.JsonConvert;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+
 namespace DotcoinTests
 {
     public class PositiveTransactionValidatorTests
