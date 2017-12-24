@@ -6,6 +6,6 @@ set -e
 dotnet clean
 dotnet restore
 
-dotnet test DotcoinTests/DotcoinTests.csproj
-
 dotnet build
+
+dotnet test DotcoinTests/DotcoinTests.csproj
