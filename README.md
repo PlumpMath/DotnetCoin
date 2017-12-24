@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/dillonwd6086/DotnetCoin.svg?branch=master)](https://travis-ci.org/dillonwd6086/DotnetCoin)
 # DotnetCoin
 The purpose of this repository is to demonstrate a Crypto-Currency implementation using DotnetCore for educational purposes.
 
