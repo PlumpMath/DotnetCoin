@@ -143,7 +143,9 @@ namespace Dotcoin
                 foreach (var block in _blockChain)
                 {
                     streamWriter.WriteLine(block);
+                    streamWriter.Flush();
                 }
+                streamWriter.Close();
             }
         }
         public void Dispose()
