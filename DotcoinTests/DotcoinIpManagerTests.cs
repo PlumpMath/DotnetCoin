@@ -5,8 +5,6 @@ using System.Net;
 using Dotcoin.Network;
 using Xunit;
 
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
-
 namespace DotcoinTests
 {
     public class DotcoinIpManagerTests : IDisposable
