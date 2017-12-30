@@ -137,16 +137,28 @@ namespace Dotcoin
         public void Save()
         {
             Console.WriteLine("Saving BlockChain to: " + _fileLocation);
-            using (var streamWriter = File.CreateText(_fileLocation))
+            
+            var chainBuilder = new StringBuilder();
+            
+            foreach (var block in _blockChain)
             {
-                //this method with handle saving to persistent memory
-                foreach (var block in _blockChain)
-                {
-                    streamWriter.WriteLine(block);
-                    streamWriter.Flush();
-                }
-                streamWriter.Close();
+                chainBuilder.AppendLine(block.ToString());
             }
+            
+            if (!File.Exists(_fileLocation))
+            {
+                using (var streamWriter = File.CreateText(_fileLocation))
+                {
+                    //this method with handle saving to persistent memory
+                    streamWriter.WriteLine(chainBuilder.ToString());
+                    streamWriter.Close();
+                }
+            }
+            else
+            {
+                File.WriteAllText(_fileLocation, chainBuilder.ToString());
+            }
+            
         }
         public void Dispose()
         {
