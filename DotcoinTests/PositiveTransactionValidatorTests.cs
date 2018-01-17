@@ -12,7 +12,7 @@ namespace DotcoinTests
         [Fact]
         public void Test_UserDoesNotExist()
         {
-            var blockChain = CreateChainWithTransactions();
+            var blockChain = CreateChainWithTransactions(2);
             var transactionValidator = new PositiveTransactionValidator();
 
             var badTransaction = new Transaction
@@ -28,7 +28,7 @@ namespace DotcoinTests
         [Fact]
         public void Test_UserDoesNotHaveEnoughMoney()
         {
-            var blockChain = CreateChainWithTransactions();
+            var blockChain = CreateChainWithTransactions(1);
             var transactionValidator = new PositiveTransactionValidator();
 
             var badTransaction = new Transaction
@@ -45,7 +45,7 @@ namespace DotcoinTests
         [Fact]
         public void Test_GoodTransaction()
         {
-            var blockChain = CreateChainWithTransactions();
+            var blockChain = CreateChainWithTransactions(0);
             var transactionValidator = new PositiveTransactionValidator();
 
             var goodTransaction = new Transaction
@@ -58,9 +58,9 @@ namespace DotcoinTests
             Assert.True(transactionValidator.ValidTransaction(blockChain, goodTransaction));
             
         }
-        private BlockChain CreateChainWithTransactions()
+        private BlockChain CreateChainWithTransactions(int i)
         {
-            var blockChain = new BlockChain("transactionTest.chain");
+            var blockChain = new BlockChain($"transactionTest{i}.chain");
 
             if (blockChain.Size() == 1)
             {
